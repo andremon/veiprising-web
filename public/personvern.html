@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Personvern — Veiprising</title>
+<meta name="description" content="Personvernerklæring for veiprising-siden: hva som lagres (anonymt og aggregert), hva som ikke lagres, og hvorfor." />
+<style>
+  :root {
+    --gul: #F2C14E; --gul-dim: #8A7332; --bakgrunn: #121614; --flate: #1C2320;
+    --flate2: #171d1a; --tekst: #E8EAE7; --tekst-dmp: #9AA3A0; --muted: #707873;
+    --linje: rgba(255,255,255,0.08);
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bakgrunn); color: var(--tekst); font-family: var(--sans); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 720px; margin: 0 auto; padding: 0 22px; }
+  a { color: var(--gul); }
+
+  header { background: radial-gradient(130% 90% at 50% -20%, #1d2422 0%, #121614 62%, #0d100f 100%); padding: 50px 0 34px; }
+  .tilbake { display: inline-block; font-size: 13px; color: var(--tekst-dmp); text-decoration: none; margin-bottom: 18px; }
+  .tilbake:hover { color: var(--gul); }
+  .merke { font-size: 12px; letter-spacing: 3px; text-transform: uppercase; color: var(--gul-dim); font-weight: 700; margin-bottom: 12px; }
+  h1 { font-size: clamp(28px, 6vw, 40px); font-weight: 800; letter-spacing: -0.6px; }
+  .sub { font-size: 15px; color: var(--tekst-dmp); margin-top: 10px; }
+
+  main { padding: 20px 0 10px; }
+  section { padding: 26px 0; border-top: 1px solid var(--linje); }
+  section:first-child { border-top: none; }
+  h2 { font-size: 19px; font-weight: 700; margin-bottom: 12px; }
+  p { color: #d4d8d4; margin-bottom: 12px; }
+
+  ul { list-style: none; display: grid; gap: 10px; margin: 6px 0 4px; }
+  li { padding-left: 26px; position: relative; color: #d4d8d4; }
+  li.ja::before { content: "✓"; position: absolute; left: 0; color: var(--gul); font-weight: 800; }
+  li.nei::before { content: "✕"; position: absolute; left: 2px; color: var(--muted); font-weight: 800; }
+
+  .boks { background: var(--flate2); border: 1px solid var(--linje); border-left: 3px solid var(--gul-dim); border-radius: 10px; padding: 16px 18px; margin-top: 10px; font-size: 14.5px; color: var(--tekst-dmp); }
+
+  footer { border-top: 1px solid var(--linje); margin-top: 20px; padding: 26px 0 54px; color: var(--muted); font-size: 13px; }
+  footer .brand { font-weight: 800; color: var(--tekst); letter-spacing: 0.5px; }
+  footer .brand span { color: var(--gul); }
+  footer a { color: var(--tekst-dmp); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <a class="tilbake" href="__BASE__/">← Tilbake til forsiden</a>
+    <div class="merke">Personvern</div>
+    <h1>Personvernerklæring</h1>
+    <div class="sub">Hva siden lagrer, hva den ikke lagrer, og hvorfor. Sist oppdatert oktober 2026.</div>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+
+    <section>
+      <h2>Kort fortalt</h2>
+      <p>Denne siden er laget for å opplyse om veiprising og måle et uformelt folkekrav. Den er bygget for å samle inn <strong>minst mulig</strong>: bare anonyme, aggregerte tall. Vi lagrer ingen navn, ingen IP-adresse i klartekst og ingen informasjon som kan spore deg mellom nettsteder.</p>
+    </section>
+
+    <section>
+      <h2>Hva vi lagrer</h2>
+      <ul>
+        <li class="ja"><strong>Besøkstall:</strong> totalt antall besøk og antall unike nettlesere — som rene opptellinger, ikke knyttet til deg.</li>
+        <li class="ja"><strong>Avstemningsresultater:</strong> hvor mange som har stemt på hvert alternativ, og for folkekravet antall ja/nei fordelt på fylke. Kun summer.</li>
+        <li class="ja"><strong>En sperre mot dobbeltstemming:</strong> for å hindre at samme nettleser eller nettverk stemmer flere ganger, lagrer vi en enveis-kryptert verdi (SHA-256-hash med en hemmelig nøkkel) av en tilfeldig nettleser-ID og av IP-adressen din. Hashen kan ikke regnes tilbake til IP-en eller til deg.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Hva vi IKKE lagrer</h2>
+      <ul>
+        <li class="nei">Ingen IP-adresse i klartekst.</li>
+        <li class="nei">Ingen navn, e-post eller annen identitet.</li>
+        <li class="nei">Ingen posisjon/GPS — fylke oppgir du selv i en nedtrekksliste.</li>
+        <li class="nei">Ingen informasjonskapsler (cookies) for sporing eller annonser.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Lagring i din egen nettleser</h2>
+      <p>Siden bruker nettleserens lokale lagring (localStorage) til å huske at du har besøkt siden og at du har stemt, slik at du ikke blir spurt på nytt. Dette ligger bare på din egen enhet og sendes ikke til oss som noe annet enn et ja/nei-flagg. Du kan når som helst tømme det ved å slette nettleserdata for siden.</p>
+    </section>
+
+    <section>
+      <h2>Folkekravet og sensitive opplysninger</h2>
+      <p>Et ja/nei om en politisk sak regnes som en sensitiv personopplysning (særlig kategori etter personvernforordningen artikkel 9). Derfor ber vi om <strong>uttrykkelig samtykke</strong> før du stemmer, med en avkrysningsboks, og vi lagrer svaret kun som en del av en anonym opptelling — aldri koblet til en identifiserbar person.</p>
+      <div class="boks">Folkekravet er en uformell temperaturmåling, ikke en offisiell folkeavstemning. Sperren per nettleser og IP betyr i praksis om lag én stemme per husstand eller nettverk, og kan omgås. Resultatene bør leses som et uttrykk for engasjement, ikke som et eksakt eller juridisk bindende tall.</div>
+    </section>
+
+    <section>
+      <h2>Formål og grunnlag</h2>
+      <p>Formålet er å opplyse om saken og synliggjøre oppslutning. Behandlingsgrunnlaget er ditt uttrykkelige samtykke for avstemningssvaret, og en berettiget interesse i enkel, anonym besøksstatistikk for resten. Siden selger ikke data og deler ikke opplysninger med tredjeparter for markedsføring.</p>
+    </section>
+
+    <section>
+      <h2>Dine rettigheter og kontakt</h2>
+      <p>Fordi alt lagres anonymt og aggregert, finnes det ingen personprofil knyttet til deg som kan hentes ut, rettes eller slettes individuelt — opplysningene kan ikke spores tilbake til enkeltpersoner. Har du spørsmål om hvordan siden behandler data, kan du kontakte den ansvarlige:</p>
+      <p>[Ditt navn / ay.no] · [din e-post]</p>
+      <div class="boks">Mener du at behandlingen bryter med personvernreglene, kan du klage til Datatilsynet (datatilsynet.no).</div>
+    </section>
+
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="brand">ay<span>.no</span></div>
+    <div style="margin-top:8px;"><a href="__BASE__/">Forsiden</a> · <a href="__BASE__/kalkulator.html">Kalkulatoren</a> · <a href="__BASE__/avstemning.html">Folkekravet</a></div>
+  </div>
+</footer>
+
+</body>
+</html>

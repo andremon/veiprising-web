@@ -158,7 +158,7 @@ async function hentFolkekrav() {
 }
 
 // ===================== Statisk side =====================
-const HTML = new Set(['index.html', 'kalkulator.html', 'avstemning.html']);
+const HTML = new Set(['index.html', 'kalkulator.html', 'avstemning.html', 'personvern.html']);
 function sendHtml(res, file) {
   fs.readFile(path.join(PUB, file), 'utf8', (err, data) => {
     if (err) return res.status(404).send('Ikke funnet');
@@ -173,8 +173,8 @@ site.use('/api', api);
 // nedlastinger og øvrige statiske filer (ingen __BASE__-erstatning nødvendig)
 site.use(express.static(PUB, { index: false }));
 
-// Monter alt under BASE (eller roten). Send /bompenger → /bompenger/.
-if (BASE) app.get(BASE, (_req, res) => res.redirect(BASE + '/'));
+// Monter alt under BASE (eller roten). app.use matcher både "/bompenger"
+// og "/bompenger/", så ingen ekstra redirect trengs (den skapte en løkke).
 app.use(BASE || '/', site);
 
 const PORT = process.env.PORT || 3000;
