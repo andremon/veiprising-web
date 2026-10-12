@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Folkekrav: avvikle bompengene | ay.no</title>
+<meta name="description" content="Folkekrav: Ønsker du å avvikle alle bompenger og gå for flat veiprising? Stem ja eller nei. Resultatene vises fordelt på fylke." />
+<style>
+  :root {
+    --gul: #F2C14E; --gul-dim: #8A7332; --bakgrunn: #121614; --flate: #1C2320;
+    --varsel: #201A12; --tekst: #E8EAE7; --tekst-dmp: #9AA3A0; --muted: #707873;
+    --ja: #5BBE7B; --nei: #D4794E;
+    --mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bakgrunn); color: var(--tekst); font-family: var(--sans); line-height: 1.5; -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 680px; margin: 0 auto; padding: 0 20px; }
+  a { color: var(--gul); }
+
+  header { background: radial-gradient(130% 90% at 50% -20%, #1d2422 0%, #121614 60%, #0d100f 100%); padding: 44px 0 32px; }
+  .tilbake { display: inline-block; font-size: 13px; color: var(--tekst-dmp); text-decoration: none; margin-bottom: 18px; }
+  .tilbake:hover { color: var(--gul); }
+  .merke { font-size: 12px; letter-spacing: 3px; text-transform: uppercase; color: var(--gul-dim); font-weight: 700; margin-bottom: 12px; }
+  h1 { font-size: clamp(26px, 6vw, 38px); font-weight: 800; line-height: 1.12; letter-spacing: -0.5px; }
+  .sporsmal { font-size: clamp(17px, 2.6vw, 20px); color: var(--tekst); margin-top: 16px; max-width: 600px; }
+
+  main { padding: 32px 0 16px; }
+  .kort { background: linear-gradient(160deg, #181e1c 0%, #131817 100%); border: 1px solid rgba(242,193,78,0.18); border-radius: 16px; padding: 24px; }
+
+  .javnei { display: flex; gap: 12px; margin-bottom: 20px; }
+  .javnei button { flex: 1; font: inherit; font-weight: 800; font-size: 18px; cursor: pointer; padding: 22px 0; border-radius: 12px; background: rgba(255,255,255,0.02); border: 1.5px solid rgba(255,255,255,0.1); color: var(--tekst); transition: all 0.15s ease; }
+  .javnei button.ja.valgt { border-color: var(--ja); background: rgba(91,190,123,0.14); color: var(--ja); }
+  .javnei button.nei.valgt { border-color: var(--nei); background: rgba(212,121,78,0.14); color: var(--nei); }
+
+  label.felt { display: block; font-size: 13px; color: var(--tekst-dmp); margin-bottom: 7px; }
+  select { width: 100%; font: inherit; font-size: 15px; color: var(--tekst); background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.12); border-radius: 10px; padding: 13px 14px; margin-bottom: 18px; -webkit-appearance: none; appearance: none; }
+  select:focus { outline: none; border-color: var(--gul-dim); }
+
+  .samtykke { display: flex; gap: 10px; align-items: flex-start; font-size: 13px; color: var(--tekst-dmp); margin-bottom: 18px; line-height: 1.45; }
+  .samtykke input { margin-top: 2px; accent-color: var(--gul); width: 17px; height: 17px; flex-shrink: 0; }
+
+  .stem { width: 100%; font: inherit; font-weight: 800; font-size: 16px; cursor: pointer; background: var(--gul); color: #16191A; border: none; border-radius: 12px; padding: 16px; }
+  .stem[disabled] { opacity: 0.4; cursor: default; }
+
+  .melding { font-size: 13px; color: var(--muted); margin-top: 14px; text-align: center; }
+
+  /* Resultater */
+  .resultater { margin-top: 6px; }
+  .takk { font-size: 15px; color: var(--gul); font-weight: 700; margin-bottom: 16px; }
+  .delt { height: 30px; border-radius: 8px; overflow: hidden; display: flex; background: rgba(255,255,255,0.05); margin-bottom: 8px; }
+  .delt .ja { background: var(--ja); }
+  .delt .nei { background: var(--nei); }
+  .delt span { display: flex; align-items: center; padding: 0 10px; font-size: 13px; font-weight: 800; color: #10130f; font-family: var(--mono); transition: width 0.6s ease; white-space: nowrap; }
+  .legend { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 18px; }
+  .legend .j { color: var(--ja); font-weight: 700; }
+  .legend .n { color: var(--nei); font-weight: 700; }
+  .total { font-size: 12px; color: var(--muted); margin-bottom: 20px; }
+
+  .fylkesliste h3 { font-size: 13px; letter-spacing: 0.5px; text-transform: uppercase; color: var(--gul-dim); margin-bottom: 12px; }
+  .frad { margin-bottom: 11px; }
+  .frad .navn { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 4px; }
+  .frad .navn .tall { font-family: var(--mono); color: var(--tekst-dmp); }
+  .fbar { height: 7px; border-radius: 4px; overflow: hidden; display: flex; background: rgba(255,255,255,0.06); }
+  .fbar .ja { background: var(--ja); }
+  .fbar .nei { background: var(--nei); }
+
+  .skjult { display: none; }
+  footer { border-top: 1px solid rgba(255,255,255,0.06); margin-top: 30px; padding: 24px 0 44px; }
+  footer .wrap { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
+  footer .brand { font-weight: 800; letter-spacing: 1px; }
+  footer .brand span { color: var(--gul); }
+  footer .smatt { font-size: 12px; color: var(--muted); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <a class="tilbake" href="__BASE__/kalkulator.html">← Tilbake til kalkulatoren</a>
+    <div class="merke">Folkekrav · ay.no</div>
+    <h1>Avvikle bompengene</h1>
+    <div class="sporsmal">Ønsker du å avvikle alle bompenger og gå for flat veiprising?</div>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <div class="kort" id="kort">
+      <div id="skjema">
+        <div class="javnei">
+          <button type="button" class="ja" data-svar="ja" id="knappJa">JA</button>
+          <button type="button" class="nei" data-svar="nei" id="knappNei">NEI</button>
+        </div>
+
+        <label class="felt" for="fylke">Hvilket fylke bor du i?</label>
+        <select id="fylke">
+          <option value="">Velg fylke …</option>
+        </select>
+
+        <label class="samtykke">
+          <input type="checkbox" id="samtykke" />
+          <span>Jeg samtykker til at svaret mitt (ja/nei og fylke) lagres anonymt for å vise et folkekrav. Ingen IP eller identitet lagres i klartekst.</span>
+        </label>
+
+        <button class="stem" id="stem" disabled>Avgi stemme</button>
+        <div class="melding" id="melding">Dette er et folkekrav, ikke en offisiell folkeavstemning.</div>
+      </div>
+
+      <div class="resultater skjult" id="resultater"></div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="brand">ay<span>.no</span></div>
+    <div class="smatt">Folkekrav · én stemme per nettleser og IP · anonymt · juni 2026</div>
+  </div>
+</footer>
+
+<script>
+  // Sett til samme Railway-adresse som i veiprising.html.
+  var BACKEND_URL = "__BASE__/api";
+
+  var FYLKER = ['Østfold','Akershus','Buskerud','Oslo','Innlandet','Vestfold','Telemark','Agder','Rogaland','Vestland','Møre og Romsdal','Trøndelag','Nordland','Troms','Finnmark'];
+
+  (function () {
+    // Fyll fylkesnedtrekk
+    var sel = document.getElementById('fylke');
+    FYLKER.forEach(function (f) {
+      var o = document.createElement('option'); o.value = f; o.textContent = f; sel.appendChild(o);
+    });
+
+    var melding = document.getElementById('melding');
+    if (!BACKEND_URL) {
+      document.getElementById('stem').disabled = true;
+      melding.textContent = 'Avstemningen er ikke aktivert ennå (mangler BACKEND_URL).';
+      return;
+    }
+    var BASE = BACKEND_URL.replace(/\/+$/, '');
+
+    function ls(k){ try { return localStorage.getItem(k); } catch(e){ return null; } }
+    function lsSet(k,v){ try { localStorage.setItem(k,v); } catch(e){} }
+    function uuid(){ return (window.crypto && crypto.randomUUID) ? crypto.randomUUID() : 'id-'+Date.now()+'-'+Math.random().toString(36).slice(2); }
+
+    var token = ls('vp_token'); if (!token) { token = uuid(); lsSet('vp_token', token); }
+
+    // Er databasen koblet til? Hvis ikke, vis en kort melding og stopp.
+    fetch(BASE + '/status').then(function(r){return r.json();}).then(function(st){
+      if (!st || !st.db) {
+        document.getElementById('stem').disabled = true;
+        melding.textContent = 'Avstemningen åpner så snart databasen er koblet til. Saken kan leses i mellomtiden.';
+      }
+    }).catch(function(){
+      document.getElementById('stem').disabled = true;
+      melding.textContent = 'Avstemningen er ikke tilgjengelig akkurat nå.';
+    });
+
+    var valgtSvar = null;
+    var knJa = document.getElementById('knappJa');
+    var knNei = document.getElementById('knappNei');
+    var fylke = document.getElementById('fylke');
+    var samtykke = document.getElementById('samtykke');
+    var stem = document.getElementById('stem');
+
+    function oppdaterKnapp() {
+      stem.disabled = !(valgtSvar && fylke.value && samtykke.checked);
+    }
+    function velg(svar) {
+      valgtSvar = svar;
+      knJa.classList.toggle('valgt', svar === 'ja');
+      knNei.classList.toggle('valgt', svar === 'nei');
+      oppdaterKnapp();
+    }
+    knJa.addEventListener('click', function () { velg('ja'); });
+    knNei.addEventListener('click', function () { velg('nei'); });
+    fylke.addEventListener('change', oppdaterKnapp);
+    samtykke.addEventListener('change', oppdaterKnapp);
+
+    // Har man stemt før (denne nettleseren)? Vis resultatene.
+    if (ls('vp_folkekrav_voted')) {
+      hentOgVis(true, ls('vp_folkekrav_voted'));
+    }
+
+    stem.addEventListener('click', function () {
+      if (!valgtSvar || !fylke.value || !samtykke.checked) return;
+      stem.disabled = true;
+      fetch(BASE + '/folkekrav/stem', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ svar: valgtSvar, fylke: fylke.value, token: token })
+      }).then(function (r) { return r.json(); }).then(function (d) {
+        if (d && d.disabled) { stem.disabled = true; melding.textContent = 'Avstemningen er ikke aktivert ennå.'; return; }
+        lsSet('vp_folkekrav_voted', valgtSvar);
+        vis(d.resultater, valgtSvar, d.alleredeStemt);
+      }).catch(function () { stem.disabled = false; melding.textContent = 'Noe gikk galt. Prøv igjen.'; });
+    });
+
+    function hentOgVis(gammel, mittSvar) {
+      fetch(BASE + '/folkekrav/resultater').then(function (r) { return r.json(); })
+        .then(function (d) { vis(d.resultater, mittSvar, gammel); }).catch(function () {});
+    }
+
+    function vis(res, mittSvar, gammel) {
+      if (!res) return;
+      document.getElementById('skjema').classList.add('skjult');
+      var jaPst = res.jaPst, neiPst = res.neiPst;
+      var ut = '<div class="takk">' + (gammel ? 'Du har allerede stemt. Slik står folkekravet nå:' : 'Takk for stemmen! Slik står folkekravet nå:') + '</div>';
+      ut += '<div class="delt">' +
+        '<span class="ja" style="width:' + jaPst + '%">' + (jaPst >= 8 ? jaPst + '%' : '') + '</span>' +
+        '<span class="nei" style="width:' + neiPst + '%">' + (neiPst >= 8 ? neiPst + '%' : '') + '</span>' +
+        '</div>';
+      ut += '<div class="legend"><span class="j">JA: ' + res.ja + (mittSvar === 'ja' ? ' (din stemme)' : '') + '</span>' +
+        '<span class="n">NEI: ' + res.nei + (mittSvar === 'nei' ? ' (din stemme)' : '') + '</span></div>';
+      ut += '<div class="total">' + res.totalt + ' stemmer totalt</div>';
+
+      var medStemmer = res.perFylke.filter(function (f) { return f.totalt > 0; })
+        .sort(function (a, b) { return b.totalt - a.totalt; });
+      if (medStemmer.length) {
+        ut += '<div class="fylkesliste"><h3>Fordeling per fylke</h3>';
+        medStemmer.forEach(function (f) {
+          var jp = f.totalt ? Math.round((f.ja / f.totalt) * 100) : 0;
+          var np = 100 - jp;
+          ut += '<div class="frad">' +
+            '<div class="navn"><span>' + f.fylke + '</span><span class="tall">' + f.ja + ' / ' + f.nei + '</span></div>' +
+            '<div class="fbar"><div class="ja" style="width:' + jp + '%"></div><div class="nei" style="width:' + np + '%"></div></div>' +
+            '</div>';
+        });
+        ut += '</div>';
+      }
+      var box = document.getElementById('resultater');
+      box.innerHTML = ut;
+      box.classList.remove('skjult');
+    }
+  })();
+</script>
+</body>
+</html>

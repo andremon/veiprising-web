@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Bompenger per kilometer — én flat sats i stedet for bomringer</title>
+<meta name="description" content="Et velgerinnspill: erstatt alle bompenger med én flat sats per kjørte kilometer. Les hele saken, prøv kalkulatoren og last ned dokumentene." />
+<meta property="og:title" content="Bompenger per kilometer" />
+<meta property="og:description" content="Erstatt alle bompenger med én flat sats per kjørte kilometer — les saken, regn selv, delta i folkekravet." />
+<style>
+  :root {
+    --gul: #F2C14E; --gul-dim: #8A7332; --bakgrunn: #121614; --flate: #1C2320;
+    --flate2: #171d1a; --varsel: #201A12; --tekst: #E8EAE7; --tekst-dmp: #9AA3A0;
+    --muted: #707873; --linje: rgba(255,255,255,0.08);
+    --ja: #5BBE7B; --nei: #D4794E;
+    --mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bakgrunn); color: var(--tekst); font-family: var(--sans); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 860px; margin: 0 auto; padding: 0 22px; }
+  a { color: var(--gul); }
+  h2 { font-size: clamp(22px, 4vw, 30px); font-weight: 800; letter-spacing: -0.4px; margin-bottom: 14px; }
+  h3 { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+  p { color: #d4d8d4; margin-bottom: 14px; }
+  section { padding: 44px 0; border-top: 1px solid var(--linje); }
+  .eyebrow { font-size: 12px; letter-spacing: 3px; text-transform: uppercase; color: var(--gul-dim); font-weight: 700; margin-bottom: 12px; }
+
+  /* nav */
+  nav { position: sticky; top: 0; z-index: 50; background: rgba(18,22,20,0.92); backdrop-filter: blur(8px); border-bottom: 1px solid var(--linje); }
+  nav .inner { max-width: 860px; margin: 0 auto; padding: 11px 22px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  nav .brand { font-weight: 800; letter-spacing: 0.5px; font-size: 15px; }
+  nav .brand span { color: var(--gul); }
+  nav .lenker { display: flex; gap: 18px; font-size: 13.5px; }
+  nav .lenker a { color: var(--tekst-dmp); text-decoration: none; }
+  nav .lenker a:hover { color: var(--gul); }
+  @media (max-width: 680px){ nav .lenker { display: none; } }
+
+  /* hero */
+  .hero { background: radial-gradient(130% 90% at 50% -10%, #1d2422 0%, #121614 62%, #0d100f 100%); padding: 64px 0 54px; border-top: none; }
+  .hero .merke { font-size: 12px; letter-spacing: 3px; text-transform: uppercase; color: var(--gul-dim); font-weight: 700; margin-bottom: 16px; }
+  .hero h1 { font-size: clamp(32px, 7vw, 56px); font-weight: 800; line-height: 1.08; letter-spacing: -1px; margin-bottom: 18px; }
+  .hero h1 em { color: var(--gul); font-style: normal; }
+  .hero .ingress { font-size: clamp(16px, 2.4vw, 20px); color: #cfd4d0; max-width: 680px; margin-bottom: 28px; }
+  .knapper { display: flex; flex-wrap: wrap; gap: 12px; }
+  .knapp { display: inline-block; font-weight: 700; font-size: 15px; text-decoration: none; padding: 13px 20px; border-radius: 11px; }
+  .knapp.primar { background: var(--gul); color: #16191A; }
+  .knapp.sekundar { background: rgba(255,255,255,0.04); color: var(--tekst); border: 1px solid var(--linje); }
+  .knapp:hover { opacity: 0.92; }
+  .vei { margin-top: 40px; height: 26px; border-radius: 5px; position: relative; background: #262b27; overflow: hidden; max-width: 520px; }
+  .vei .kant { position: absolute; left: 0; right: 0; height: 2px; background: rgba(232,234,231,0.85); }
+  .vei .kant.t { top: 6px; } .vei .kant.b { bottom: 6px; }
+  .vei .midt { position: absolute; left: 0; right: 0; top: 50%; height: 4px; transform: translateY(-50%); background: repeating-linear-gradient(90deg, var(--gul) 0 34px, transparent 34px 60px); }
+
+  /* stat-rader / kort */
+  .kortrad { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 8px; }
+  @media (max-width: 680px){ .kortrad { grid-template-columns: 1fr; } }
+  .kort { background: var(--flate); border: 1px solid var(--linje); border-radius: 14px; padding: 22px; }
+  .kort .tag { font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--gul-dim); font-weight: 700; margin-bottom: 10px; }
+  .stats { display: flex; flex-wrap: wrap; gap: 20px 28px; margin: 14px 0 6px; }
+  .stat .n { font-family: var(--mono); font-size: 28px; font-weight: 700; color: var(--gul); }
+  .stat .l { font-size: 12.5px; color: var(--tekst-dmp); max-width: 180px; }
+
+  .punkter { list-style: none; display: grid; gap: 14px; margin-top: 10px; }
+  .punkt { display: grid; grid-template-columns: 34px 1fr; gap: 6px 14px; align-items: start; background: var(--flate2); border: 1px solid var(--linje); border-radius: 12px; padding: 16px 18px; }
+  .punkt .nr { grid-row: span 2; font-family: var(--mono); font-size: 20px; font-weight: 800; color: var(--gul); }
+  .punkt h3 { margin: 0; }
+  .punkt p { margin: 2px 0 0; color: var(--tekst-dmp); font-size: 14.5px; }
+
+  .boks { background: var(--varsel); border: 1px solid rgba(242,193,78,0.25); border-radius: 12px; padding: 18px 20px; margin-top: 18px; }
+  .boks .t { color: var(--gul); font-weight: 700; margin-bottom: 6px; }
+  .boks p { margin: 0; font-size: 14.5px; }
+
+  .liste { list-style: none; display: grid; gap: 9px; margin-top: 8px; }
+  .liste li { padding-left: 26px; position: relative; color: #cdd2ce; font-size: 15px; }
+  .liste li::before { content: "\2013"; position: absolute; left: 0; color: var(--gul); font-weight: 800; }
+
+  /* nedlasting */
+  .filer { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 8px; }
+  @media (max-width: 680px){ .filer { grid-template-columns: 1fr; } }
+  .fil { display: flex; align-items: center; gap: 14px; background: var(--flate); border: 1px solid var(--linje); border-radius: 12px; padding: 16px 18px; text-decoration: none; color: var(--tekst); transition: border-color .15s, background .15s; }
+  .fil:hover { border-color: var(--gul-dim); background: rgba(242,193,78,0.05); }
+  .fil .ikon { width: 40px; height: 40px; flex-shrink: 0; border-radius: 9px; background: rgba(242,193,78,0.14); color: var(--gul); display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-size: 11px; font-weight: 700; }
+  .fil .navn { font-weight: 700; font-size: 15px; }
+  .fil .meta { font-size: 12.5px; color: var(--muted); margin-top: 1px; }
+
+  .cta { background: linear-gradient(160deg, #1d2422, #141917); border: 1px solid rgba(242,193,78,0.22); border-radius: 16px; padding: 30px; text-align: center; }
+  .cta h2 { margin-bottom: 10px; }
+  .cta p { max-width: 560px; margin: 0 auto 20px; }
+
+  footer { border-top: 1px solid var(--linje); padding: 34px 0 60px; color: var(--muted); font-size: 13px; }
+  footer .brand { font-weight: 800; color: var(--tekst); letter-spacing: 0.5px; }
+  footer .brand span { color: var(--gul); }
+  footer .kilder { margin-top: 12px; line-height: 1.7; }
+  .forbehold { background: var(--flate2); border: 1px solid var(--linje); border-left: 3px solid var(--gul-dim); border-radius: 10px; padding: 14px 18px; margin-top: 16px; font-size: 13.5px; color: var(--tekst-dmp); }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="inner">
+    <div class="brand">ay<span>.no</span> · Veiprising</div>
+    <div class="lenker">
+      <a href="#saken">Saken</a>
+      <a href="#regnestykket">Regnestykket</a>
+      <a href="#gjeld">Gjelda</a>
+      <a href="#forslaget">Forslaget</a>
+      <a href="#nedlasting">Last ned</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="merke">Et velgerinnspill</div>
+    <h1>Erstatt bompengene med <em>én flat sats per kilometer</em></h1>
+    <p class="ingress">Nesten 300 bomstasjoner, 72 milliarder i gjeld og nye, trygge veier som står halvtomme fordi folk vil slippe bommen. Det finnes en enklere, mer rettferdig måte å finansiere vei på — og tallene kan du etterprøve selv.</p>
+    <div class="knapper">
+      <a class="knapp primar" href="__BASE__/kalkulator.html">Prøv kalkulatoren →</a>
+      <a class="knapp sekundar" href="#nedlasting">Last ned dokumentene</a>
+      <a class="knapp sekundar" href="__BASE__/avstemning.html">Delta i folkekravet</a>
+    </div>
+    <div class="vei" aria-hidden="true"><span class="kant t"></span><span class="midt"></span><span class="kant b"></span></div>
+  </div>
+</header>
+
+<section id="saken">
+  <div class="wrap">
+    <div class="eyebrow">Problemet i praksis</div>
+    <h2>Dagens modell motarbeider sitt eget formål</h2>
+    <p>I dag får hvert veiprosjekt sin egen, høye bompengeandel. Når prisen blir høy nok, velger trafikken den gamle veien — eller regningen og gjelda bare vokser. To ferske eksempler viser mønsteret.</p>
+    <div class="kortrad">
+      <div class="kort">
+        <div class="tag">E39 Kristiansand–Mandal</div>
+        <h3>Den nye veien folk velger bort</h3>
+        <p style="font-size:14.5px;color:var(--tekst-dmp)">Ny firefelts vei som halverte reisetiden og er langt tryggere. Likevel velger nesten halvparten fortsatt den gamle, ulykkesbelastede veien for å slippe bompengene.</p>
+        <div class="stats">
+          <div class="stat"><div class="n">~47 %</div><div class="l">velger fortsatt den gamle veien</div></div>
+          <div class="stat"><div class="n">127 kr</div><div class="l">personbil én vei</div></div>
+          <div class="stat"><div class="n">4,7 mrd</div><div class="l">betalt for sikkerhet mange ikke bruker</div></div>
+        </div>
+      </div>
+      <div class="kort">
+        <div class="tag">Sotrasambandet (2026)</div>
+        <h3>Kostnadssprekk og prissjokk</h3>
+        <p style="font-size:14.5px;color:var(--tekst-dmp)">Totalramme 23,1 mrd. Entreprenøren krever ~7 mrd ekstra for kostnadssprekk; Statens vegvesen viser til fastpris og tilbyr 90 mill. Åpningen er utsatt, og en ny godshavn på Ågotnes kan stå ferdig i 2028 uten at veien inn til Bergen er klar.</p>
+        <div class="stats">
+          <div class="stat"><div class="n">~74 kr</div><div class="l">per passering ved åpning (opptil 3 500 kr/mnd for pendlere)</div></div>
+          <div class="stat"><div class="n">7 mrd</div><div class="l">entreprenørens krav — mot 90 mill tilbudt</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="regnestykket">
+  <div class="wrap">
+    <div class="eyebrow">Regnestykket</div>
+    <h2>Hva ville én kilometer kostet?</h2>
+    <p>Bompenger kreves inn svært ujevnt — ingenting på de fleste veier, mye gjennom bomringene. Fordeler man hele beløpet flatt over all kjøring, gir offentlige tall (Statens vegvesen og SSB) en overraskende lav sats:</p>
+    <div class="stats" style="margin:22px 0 10px">
+      <div class="stat"><div class="n">35–47 øre</div><div class="l">per km — bompengene alene (16,8 mrd ÷ 35–45 mrd km)</div></div>
+      <div class="stat"><div class="n">67–85 øre</div><div class="l">per km — hvis veibruksavgiften regnes med</div></div>
+    </div>
+    <p>I kalkulatoren kan du skru på hver forutsetning selv — statlig andel, tunge kjøretøy, gjeld og rente — og se satsen oppdatere seg i sanntid.</p>
+    <a class="knapp primar" href="__BASE__/kalkulator.html">Åpne kalkulatoren →</a>
+    <div class="boks">
+      <div class="t">Elbil-konvergensen</div>
+      <p>Ved utgangen av 2025 var det nesten like mange elbiler (945 000) som dieselbiler (943 000), mot 676 000 bensinbiler. I dag betaler elbiler ingen veibruksavgift — men når forskjellen viskes ut, blir «alle betaler det samme» det realistiske sluttpunktet, og en flat sats for all kjøring gir nettopp mest mening.</p>
+    </div>
+  </div>
+</section>
+
+<section id="gjeld">
+  <div class="wrap">
+    <div class="eyebrow">Gjeldsproblemet</div>
+    <h2>Bompengefjellet: 72 milliarder i gjeld</h2>
+    <p>Bompengeselskapenes gjeld var 72,1 milliarder kroner ved utgangen av 2024 — og den vokser med rundt 7 milliarder i året, fordi nye prosjekter stadig lånefinansieres. Med dagens rentenivå går omtrent 3 milliarder kroner i året bare til renter.</p>
+    <div class="stats" style="margin:20px 0 6px">
+      <div class="stat"><div class="n">72 mrd</div><div class="l">samlet bompengegjeld (2024)</div></div>
+      <div class="stat"><div class="n">~3 mrd/år</div><div class="l">bare i renter</div></div>
+      <div class="stat"><div class="n">6–7 øre</div><div class="l">av hver kjørte km går til renter — aldri til vei</div></div>
+    </div>
+    <div class="boks">
+      <div class="t">Løsningen finnes allerede — som presedens</div>
+      <p>Lar staten eller Oljefondet overta gjelda, forsvinner rentekostnaden. Staten låner dessuten billigere enn bompengeselskapene. Dette er ikke en fjern idé: i 2025 la staten om finansieringen av <strong>Norske tog</strong> nettopp slik — fra dyre lån i det private markedet til statlig lånefinansiering, der staten kjøper tilbake selskapets obligasjonsgjeld (regjeringen.no, 24.06.2025). Samme grep kan brukes på bompengegjelda.</p>
+    </div>
+  </div>
+</section>
+
+<section id="forslaget">
+  <div class="wrap">
+    <div class="eyebrow">Forslaget</div>
+    <h2>Seks konkrete punkter</h2>
+    <ul class="punkter">
+      <li class="punkt"><div class="nr">1</div><h3>Utred flat veiprising</h3><p>En provenynøytral km-sats som erstatter bompengene, beregnet av Finansdepartementet.</p></li>
+      <li class="punkt"><div class="nr">2</div><h3>Nye veier brukt fra dag én</h3><p>Lik sats uansett strekning fjerner straffen som holder trafikk borte fra nye, trygge veier.</p></li>
+      <li class="punkt"><div class="nr">3</div><h3>Ett system, ikke femti bomringer</h3><p>Direkte innkreving fjerner nær 300 bomstasjoner og over én milliard kroner i årlig drift.</p></li>
+      <li class="punkt"><div class="nr">4</div><h3>La staten overta gjelda</h3><p>72 mrd nedbetales, og ~3 mrd kr i årlige renter forsvinner fra regninga — slik staten gjorde for Norske tog.</p></li>
+      <li class="punkt"><div class="nr">5</div><h3>Byene beholder sitt</h3><p>Byvekst-områder får en høyere, sonebasert sats — finansiering og køstyring uten bomstasjoner.</p></li>
+      <li class="punkt"><div class="nr">6</div><h3>Lik sats for alle kjøretøy</h3><p>Også MC, moped og mopedbil, vektet etter vekt og slitasje; lik uansett drivstoff når elbilfordelene fases ut.</p></li>
+    </ul>
+    <div class="boks"><p style="color:#d4d8d4"><strong style="color:var(--gul)">Poenget:</strong> ikke nødvendigvis lavere totalregning — men forutsigbart, rettferdig, og uten at trygge veier står ubrukt eller at renter spiser opp pengene.</p></div>
+  </div>
+</section>
+
+<section id="innvendinger">
+  <div class="wrap">
+    <div class="eyebrow">Innvendinger og tilsvar</div>
+    <h2>De vanligste motargumentene — med ærlige svar</h2>
+    <p>Enhver omlegging møter innvendinger. Her er de ni mest sannsynlige. Der en innvending har reell tyngde, sies det rett ut. Hele gjennomgangen med svar ligger i dokumentet du kan laste ned nedenfor.</p>
+    <ul class="liste">
+      <li>«Kjørelengdetallene inkluderer kjøring i utlandet.»</li>
+      <li>«En billig sats per km vil føre til mer kjøring.»</li>
+      <li>«Å logge alle kilometer betyr GPS-overvåking.»</li>
+      <li>«Distriktene kjører lengre og rammes hardere.»</li>
+      <li>«Dette er jo bare en ny avgift.»</li>
+      <li>«Å bruke Oljefondet bryter med handlingsregelen.»</li>
+      <li>«Bompenger bestemmes og øremerkes lokalt.»</li>
+      <li>«MC, moped og mopedbil er fritatt i dag.»</li>
+      <li>«Byene bruker bompenger til byvekstavtaler.»</li>
+    </ul>
+    <p style="margin-top:16px"><a href="__BASE__/filer/02-Innvendinger-og-tilsvar.pdf">Les alle svarene (PDF) →</a></p>
+  </div>
+</section>
+
+<section id="nedlasting">
+  <div class="wrap">
+    <div class="eyebrow">Last ned</div>
+    <h2>Dokumentene</h2>
+    <p>Alt er fritt å lese, laste ned og dele. Tallene er kildebelagte og ment som grunnlag for diskusjon.</p>
+    <div class="filer">
+      <a class="fil" href="__BASE__/filer/01-Bompenger-per-kilometer.pptx" download>
+        <div class="ikon">PPTX</div>
+        <div><div class="navn">Presentasjonen</div><div class="meta">Hele saken i 13 lysbilder · PowerPoint</div></div>
+      </a>
+      <a class="fil" href="__BASE__/filer/02-Innvendinger-og-tilsvar.pdf" download>
+        <div class="ikon">PDF</div>
+        <div><div class="navn">Innvendinger og tilsvar</div><div class="meta">Ni motargumenter med svar · PDF</div></div>
+      </a>
+      <a class="fil" href="__BASE__/filer/00-Folgeskriv.pdf" download>
+        <div class="ikon">PDF</div>
+        <div><div class="navn">Følgeskriv</div><div class="meta">Oversikt over saken · PDF</div></div>
+      </a>
+      <a class="fil" href="__BASE__/filer/veiprising-dokumenter.zip" download>
+        <div class="ikon">ZIP</div>
+        <div><div class="navn">Alle dokumenter</div><div class="meta">Samlet nedlasting · ZIP</div></div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="cta">
+      <h2>Hva mener du?</h2>
+      <p>Si din mening i folkekravet: bør alle bompenger avvikles til fordel for flat veiprising? Ja eller nei, med fordeling per fylke. Et uformelt folkekrav — ikke en offisiell folkeavstemning.</p>
+      <a class="knapp primar" href="__BASE__/avstemning.html">Delta i folkekravet →</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="brand">ay<span>.no</span></div>
+    <div class="kilder">
+      Tallgrunnlag: Statens vegvesen (bompenger og drift), SSB (kjørelengde og bilbestand), Statsbudsjettet (veibruksavgift), NAF og Statens vegvesen (gjeld og renter), Stortinget og Nye Veier (E39), regjeringen.no (statlig lånefinansiering, Norske tog, 24.06.2025) og medieomtale av Sotrasambandet (BT, BA, Nettavisen, 2026).
+    </div>
+    <div class="forbehold">
+      Beregningene er gjennomsnitt og ment som grunnlag for diskusjon — ikke som en ferdig avgiftsmodell. Avstemningen er et uformelt folkekrav (sperre per nettleser og IP), ikke en offisiell folkeavstemning. Bindende folkeavstemninger finnes ikke i norsk rett; en endring må til slutt vinnes ved stemmeseddelen.
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
