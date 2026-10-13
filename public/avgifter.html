@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Hva betaler du allerede per kilometer? — a5.no</title>
+<meta name="description" content="Du betaler allerede flere avgifter per kilometer — trafikkforsikringsavgiften via forsikringen og veibruksavgiften i drivstoffet. Se hva de koster deg per km og per år." />
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%2032%2032%27%3E%3Crect%20width%3D%2732%27%20height%3D%2732%27%20rx%3D%277%27%20fill%3D%27%2316191A%27/%3E%3Crect%20x%3D%2714.3%27%20y%3D%273.5%27%20width%3D%273.4%27%20height%3D%276%27%20rx%3D%271%27%20fill%3D%27%23F2C14E%27/%3E%3Crect%20x%3D%2714.3%27%20y%3D%2713%27%20width%3D%273.4%27%20height%3D%276%27%20rx%3D%271%27%20fill%3D%27%23F2C14E%27/%3E%3Crect%20x%3D%2714.3%27%20y%3D%2722.5%27%20width%3D%273.4%27%20height%3D%276%27%20rx%3D%271%27%20fill%3D%27%23F2C14E%27/%3E%3C/svg%3E" />
+<style>
+  :root {
+    --gul: #F2C14E; --gul-dim: #8A7332; --bakgrunn: #121614; --flate: #1C2320;
+    --varsel: #201A12; --tekst: #E8EAE7; --tekst-dmp: #9AA3A0; --muted: #707873;
+    --linje: rgba(255,255,255,0.08);
+    --mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bakgrunn); color: var(--tekst); font-family: var(--sans); line-height: 1.5; -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 720px; margin: 0 auto; padding: 0 20px; }
+  a { color: var(--gul); }
+
+  header { background: radial-gradient(130% 90% at 50% -20%, #1d2422 0%, #121614 60%, #0d100f 100%); padding: 44px 0 30px; }
+  .tilbake { display: inline-block; font-size: 13px; color: var(--tekst-dmp); text-decoration: none; margin-bottom: 18px; }
+  .tilbake:hover { color: var(--gul); }
+  .merke { font-size: 12px; letter-spacing: 3px; text-transform: uppercase; color: var(--gul-dim); font-weight: 700; margin-bottom: 12px; }
+  h1 { font-size: clamp(25px, 5.5vw, 36px); font-weight: 800; line-height: 1.12; letter-spacing: -0.5px; }
+  .sub { font-size: clamp(15px, 2.4vw, 18px); color: var(--tekst-dmp); margin-top: 14px; max-width: 610px; }
+
+  main { padding: 28px 0 10px; }
+
+  /* samlet resultat */
+  .resultat { background: linear-gradient(160deg, #181e1c 0%, #131817 100%); border: 1px solid rgba(242,193,78,0.22); border-radius: 16px; padding: 26px 24px 0; overflow: hidden; }
+  .resultat .label { font-size: 13px; letter-spacing: 1px; text-transform: uppercase; color: var(--gul-dim); font-weight: 700; }
+  .stort { display: flex; align-items: baseline; gap: 10px; margin-top: 10px; }
+  .stort .tall { font-family: var(--mono); font-size: clamp(44px, 11vw, 66px); font-weight: 700; color: var(--gul); line-height: 1; }
+  .stort .enhet { font-size: 18px; color: var(--tekst-dmp); }
+  .peraar { font-size: 16px; color: var(--tekst); margin-top: 12px; font-family: var(--mono); }
+  .peraar b { color: var(--gul); }
+  .splitt { display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 0 20px; }
+  .del { background: rgba(255,255,255,0.03); border: 1px solid var(--linje); border-radius: 9px; padding: 9px 13px; font-size: 12.5px; }
+  .del .d-label { color: var(--muted); }
+  .del .d-verdi { color: var(--tekst); font-family: var(--mono); margin-top: 2px; }
+  .stripe { position: relative; height: 18px; margin: 0 -24px; background: #1f2420; overflow: hidden; }
+  .stripe .kant { position: absolute; left: 0; right: 0; height: 2px; background: rgba(232,234,231,0.85); }
+  .stripe .kant.topp { top: 3px; } .stripe .kant.bunn { bottom: 3px; }
+  .stripe .midt { position: absolute; left: 0; right: 0; top: 50%; height: 3px; transform: translateY(-50%); background: repeating-linear-gradient(90deg, var(--gul) 0 26px, transparent 26px 48px); }
+
+  .seksjonslabel { font-size: 12px; letter-spacing: 1px; text-transform: uppercase; color: var(--gul-dim); font-weight: 700; margin: 28px 0 12px; }
+  .segment { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 20px; }
+  .seg { text-align: center; font: inherit; font-weight: 600; cursor: pointer; color: var(--tekst); background: rgba(255,255,255,0.02); border: 1px solid var(--linje); border-radius: 10px; padding: 12px 6px; transition: all .15s ease; }
+  .seg .navn { font-size: 14.5px; }
+  .seg.aktiv { border-color: var(--gul); background: rgba(242,193,78,0.12); }
+
+  .kort { background: var(--flate); border: 1px solid var(--linje); border-radius: 14px; padding: 20px; margin-bottom: 16px; }
+  .kort .ktopp { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; margin-bottom: 4px; }
+  .kort h3 { font-size: 16px; font-weight: 700; }
+  .kort .kore { font-family: var(--mono); font-size: 20px; font-weight: 700; color: var(--gul); white-space: nowrap; }
+  .kort .kinfo { font-size: 13px; color: var(--tekst-dmp); margin-bottom: 14px; }
+
+  .felt { margin-bottom: 16px; }
+  .felt:last-child { margin-bottom: 0; }
+  .felt .topp { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; }
+  .f-label { font-size: 13.5px; color: var(--tekst); }
+  .f-verdi { font-family: var(--mono); font-size: 16px; font-weight: 700; color: var(--gul); }
+  .f-enhet { font-size: 12px; color: var(--muted); margin-left: 5px; }
+  input[type=range] { width: 100%; -webkit-appearance: none; appearance: none; height: 6px; border-radius: 4px; background: rgba(255,255,255,0.1); outline: none; }
+  input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 22px; height: 22px; border-radius: 50%; background: var(--gul); cursor: pointer; border: 3px solid #16191A; }
+  input[type=range]::-moz-range-thumb { width: 19px; height: 19px; border-radius: 50%; background: var(--gul); cursor: pointer; border: 3px solid #16191A; }
+
+  .bryter { display: flex; align-items: flex-start; gap: 13px; width: 100%; text-align: left; font: inherit; color: var(--tekst); cursor: pointer; background: rgba(255,255,255,0.02); border: 1px solid var(--linje); border-radius: 10px; padding: 13px 15px; margin-top: 14px; }
+  .bryter.på { border-color: var(--gul-dim); background: rgba(242,193,78,0.06); }
+  .knott { flex-shrink: 0; width: 42px; height: 24px; border-radius: 12px; background: rgba(255,255,255,0.14); position: relative; transition: background .15s ease; margin-top: 1px; }
+  .bryter.på .knott { background: var(--gul); }
+  .knott::after { content: ""; position: absolute; top: 3px; left: 3px; width: 18px; height: 18px; border-radius: 50%; background: #16191A; transition: transform .15s ease; }
+  .bryter.på .knott::after { transform: translateX(18px); }
+  .b-tittel { font-weight: 600; font-size: 14px; }
+  .b-hint { display: block; font-size: 12px; color: var(--tekst-dmp); margin-top: 3px; }
+
+  .notat { background: var(--varsel); border: 1px solid rgba(242,193,78,0.25); border-radius: 12px; padding: 16px 18px; margin: 10px 0; font-size: 14px; color: #d4d8d4; }
+  .notat strong { color: var(--gul); }
+  .kilder { font-size: 12px; color: var(--muted); margin-top: 20px; line-height: 1.6; }
+
+  footer { border-top: 1px solid var(--linje); margin-top: 30px; padding: 24px 0 50px; }
+  footer .wrap { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+  footer .brand { font-weight: 800; letter-spacing: 0.5px; }
+  footer .brand span { color: var(--gul); }
+  footer .smatt { font-size: 12px; color: var(--muted); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <a class="tilbake" href="__BASE__/">← Tilbake til forsiden</a>
+    <div class="merke">Avgiftene du allerede betaler</div>
+    <h1>Hva betaler du allerede per kilometer?</h1>
+    <p class="sub">To avgifter følger bilen i dag — trafikkforsikringsavgiften (den gamle årsavgiften, nå trukket månedlig via forsikringen) og veibruksavgiften (skjult i drivstoffprisen). Dra i glidebryterne og se hva de koster deg per km og per år.</p>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+
+    <div class="resultat">
+      <div class="label">Du betaler allerede</div>
+      <div class="stort"><span class="tall" id="sumOre">0</span><span class="enhet">øre/km</span></div>
+      <div class="peraar" id="sumAar">= <b>0 kr</b> i året</div>
+      <div class="splitt" id="splitt"></div>
+      <div class="stripe"><span class="kant topp"></span><span class="midt"></span><span class="kant bunn"></span></div>
+    </div>
+
+    <div class="seksjonslabel">Kjøretøy</div>
+    <div class="segment" id="segment"></div>
+
+    <div class="felt" style="margin-bottom:24px;">
+      <div class="topp"><span class="f-label">Årlig kjørelengde</span><span><span class="f-verdi" id="kmVerdi">12 000</span><span class="f-enhet">km/år</span></span></div>
+      <input type="range" id="km" min="2000" max="40000" step="500" value="12000" />
+    </div>
+
+    <div class="kort">
+      <div class="ktopp"><h3>Trafikkforsikringsavgift</h3><span class="kore" id="trafOre">0 øre/km</span></div>
+      <div class="kinfo" id="trafInfo">Fast beløp per bil, uansett hvor mye du kjører — trukket månedlig via forsikringen.</div>
+      <div class="felt">
+        <div class="topp"><span class="f-label">Sats</span><span><span class="f-verdi" id="trafVerdi">6,52</span><span class="f-enhet">kr/dag</span></span></div>
+        <input type="range" id="traf" min="0" max="12" step="0.01" value="6.52" />
+      </div>
+    </div>
+
+    <div class="kort">
+      <div class="ktopp"><h3>Veibruksavgift</h3><span class="kore" id="veiOre">0 øre/km</span></div>
+      <div class="kinfo" id="veiInfo">Avgift per liter drivstoff — skjult i pumpeprisen. Elbiler betaler null.</div>
+      <div class="felt">
+        <div class="topp"><span class="f-label">Forbruk</span><span><span class="f-verdi" id="forbrukVerdi">0,65</span><span class="f-enhet">l/mil</span></span></div>
+        <input type="range" id="forbruk" min="0" max="1.20" step="0.01" value="0.65" />
+      </div>
+      <div class="felt">
+        <div class="topp"><span class="f-label">Avgift</span><span><span class="f-verdi" id="avgiftVerdi">3,77</span><span class="f-enhet">kr/liter</span></span></div>
+        <input type="range" id="avgift" min="0" max="10" step="0.01" value="3.77" />
+      </div>
+      <button class="bryter" id="bryterCO2" type="button">
+        <span class="knott"></span>
+        <span>
+          <span class="b-tittel">Legg til CO₂-avgiften også</span>
+          <span class="b-hint">Egen avgift på drivstoff som kommer i tillegg (bensin 3,80 · diesel 4,42 kr/l).</span>
+        </span>
+      </button>
+    </div>
+
+    <div class="notat">
+      <strong>Dette er poenget:</strong> trafikkforsikringsavgiften kreves allerede inn gjennom forsikringen hver måned — akkurat den mekanismen en flat veiprising ville brukt. Men som et fast beløp per bil straffer den deg som kjører lite: jo færre kilometer, jo dyrere blir hver kilometer. En veiprising betales per faktisk kjørte kilometer, og blir dermed mer rettferdig. Legg til veibruksavgiften, og du betaler allerede godt over 40 øre/km i dag — bare usynlig og ujevnt. Til sammenligning ligger den flate satsen i <a href="__BASE__/kalkulator.html">kalkulatoren</a> på 35–85 øre/km.
+    </div>
+
+    <div class="notat">
+      <strong>Og det blottlegger byvekstpakkene:</strong> en flat per-km-avgift skiller tydelig to ting som i dag er blandet sammen — betaling for å <em>bruke</em> veien, og finansiering av byutvikling. I byvekstavtalene går en stor del av bompengene til kollektiv, sykkel og gange; tiltak som kommer hele samfunnet til gode, men som i praksis betales av bilistene alene gjennom bomringen. Når veibruk prises åpent per kilometer, blir det synlig at slik byutvikling egentlig burde finansieres direkte over kommunale, fylkeskommunale og statlige budsjetter — ikke skjules i en avgift på dem som tilfeldigvis kjører gjennom en bomring.
+    </div>
+
+    <div class="kilder">
+      <strong>Satser (2026):</strong> Trafikkforsikringsavgift fra 1. mars 2026 — personbil bensin/diesel 6,52 kr/dag (2 380 kr/år), diesel uten partikkelfilter 8,10 kr/dag, elbil 9,16 kr/dag (3 343 kr/år), MC 5,51 kr/dag (kilde: regjeringen.no / NAF). Veibruksavgift fra 1. september 2026 — bensin 3,77 kr/l, diesel 2,28 kr/l; CO₂-avgift bensin 3,80, diesel 4,42 kr/l (regjeringen.no / Smarte Penger). Forbruk i liter per mil (10 km). Standardverdier er typiske tall og kan justeres.
+    </div>
+
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="brand">a5<span>.no</span></div>
+    <div class="smatt">Åpen kalkulator · satser fra 2026 · <a href="__BASE__/personvern.html" style="color:var(--gul);">Personvern</a></div>
+  </div>
+</footer>
+
+<script>
+  var KJT = {
+    bensin: { navn: 'Bensin',  traf: 6.52, forbruk: 0.65, avgift: 3.77, co2: 3.80 },
+    diesel: { navn: 'Diesel',  traf: 6.52, forbruk: 0.55, avgift: 2.28, co2: 4.42 },
+    elbil:  { navn: 'Elbil',   traf: 9.16, forbruk: 0.00, avgift: 0.00, co2: 0.00 }
+  };
+  var t = { type: 'bensin', km: 12000, traf: 6.52, forbruk: 0.65, avgift: 3.77, inkluderCO2: false };
+
+  function nb(v, d) {
+    d = d || 0;
+    var fast = Number(v).toFixed(d);
+    var deler = fast.split('.');
+    var med = deler[0].replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+    return deler[1] ? med + ',' + deler[1] : med;
+  }
+  function co2For() { return KJT[t.type].co2; }
+
+  function beregn() {
+    var trafAar = t.traf * 365;
+    var trafOre = t.km > 0 ? (trafAar / t.km) * 100 : 0;
+    var veiSats = t.avgift + (t.inkluderCO2 ? co2For() : 0);
+    var veiKrKm = (t.forbruk / 10) * veiSats;
+    var veiOre = veiKrKm * 100;
+    var veiAar = veiKrKm * t.km;
+    return {
+      trafAar: trafAar, trafOre: trafOre,
+      veiOre: veiOre, veiAar: veiAar,
+      sumOre: trafOre + veiOre, sumAar: trafAar + veiAar
+    };
+  }
+
+  // segment
+  var segEl = document.getElementById('segment');
+  Object.keys(KJT).forEach(function (key) {
+    var d = KJT[key];
+    var b = document.createElement('button');
+    b.type = 'button'; b.className = 'seg' + (t.type === key ? ' aktiv' : '');
+    b.setAttribute('data-key', key);
+    b.innerHTML = '<div class="navn">' + d.navn + '</div>';
+    b.addEventListener('click', function () {
+      t.type = key; t.traf = d.traf; t.forbruk = d.forbruk; t.avgift = d.avgift;
+      document.querySelectorAll('.seg').forEach(function (s) { s.classList.toggle('aktiv', s.getAttribute('data-key') === key); });
+      document.getElementById('traf').value = d.traf;
+      document.getElementById('forbruk').value = d.forbruk;
+      document.getElementById('avgift').value = d.avgift;
+      document.getElementById('trafVerdi').textContent = nb(d.traf, 2);
+      document.getElementById('forbrukVerdi').textContent = nb(d.forbruk, 2);
+      document.getElementById('avgiftVerdi').textContent = nb(d.avgift, 2);
+      tegn();
+    });
+    segEl.appendChild(b);
+  });
+
+  function koble(id, verdiId, prop, des) {
+    var s = document.getElementById(id);
+    s.addEventListener('input', function () {
+      t[prop] = parseFloat(s.value);
+      document.getElementById(verdiId).textContent = nb(t[prop], des);
+      tegn();
+    });
+  }
+  koble('km', 'kmVerdi', 'km', 0);
+  koble('traf', 'trafVerdi', 'traf', 2);
+  koble('forbruk', 'forbrukVerdi', 'forbruk', 2);
+  koble('avgift', 'avgiftVerdi', 'avgift', 2);
+
+  document.getElementById('bryterCO2').addEventListener('click', function () {
+    t.inkluderCO2 = !t.inkluderCO2;
+    this.classList.toggle('på', t.inkluderCO2);
+    tegn();
+  });
+
+  function tegn() {
+    var r = beregn();
+    document.getElementById('sumOre').textContent = nb(r.sumOre, 1);
+    document.getElementById('sumAar').innerHTML = '= <b>' + nb(r.sumAar, 0) + ' kr</b> i året';
+    document.getElementById('trafOre').textContent = nb(r.trafOre, 1) + ' øre/km';
+    document.getElementById('veiOre').textContent = nb(r.veiOre, 1) + ' øre/km';
+    document.getElementById('trafInfo').textContent =
+      'Fast ' + nb(r.trafAar, 0) + ' kr/år per bil, uansett kjørelengde — trukket månedlig via forsikringen.';
+    document.getElementById('veiInfo').textContent = t.type === 'elbil'
+      ? 'Elbiler betaler null i veibruksavgift, selv om de bruker de samme veiene.'
+      : 'Avgift per liter drivstoff — skjult i pumpeprisen. ≈ ' + nb(r.veiAar, 0) + ' kr/år.';
+    document.getElementById('splitt').innerHTML = [
+      { l: 'Trafikkforsikring', v: nb(r.trafOre, 1) + ' øre/km' },
+      { l: 'Veibruksavgift', v: nb(r.veiOre, 1) + ' øre/km' },
+      { l: 'Til sammen', v: nb(r.sumOre, 1) + ' øre/km' }
+    ].map(function (d) {
+      return '<div class="del"><div class="d-label">' + d.l + '</div><div class="d-verdi">' + d.v + '</div></div>';
+    }).join('');
+  }
+
+  tegn();
+</script>
+</body>
+</html>
