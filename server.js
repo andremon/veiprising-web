@@ -158,7 +158,7 @@ async function hentFolkekrav() {
 }
 
 // ===================== Statisk side =====================
-const HTML = new Set(['index.html', 'kalkulator.html', 'avstemning.html', 'personvern.html', 'avgifter.html']);
+const HTML = new Set(['index.html', 'kalkulator.html', 'avstemning.html', 'personvern.html', 'avgifter.html', 'temperaturmaling.html']);
 function sendHtml(res, file) {
   fs.readFile(path.join(PUB, file), 'utf8', (err, data) => {
     if (err) return res.status(404).send('Ikke funnet');

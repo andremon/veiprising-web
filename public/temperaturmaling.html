@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Hva mener du? — uformell temperaturmåling — a5.no</title>
+<meta name="description" content="Uformell temperaturmåling: hvilken modell bør erstatte bompengene? Gi din stemme og se hvordan det står." />
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%2032%2032%27%3E%3Crect%20width%3D%2732%27%20height%3D%2732%27%20rx%3D%277%27%20fill%3D%27%2316191A%27/%3E%3Crect%20x%3D%2714.3%27%20y%3D%273.5%27%20width%3D%273.4%27%20height%3D%276%27%20rx%3D%271%27%20fill%3D%27%23F2C14E%27/%3E%3Crect%20x%3D%2714.3%27%20y%3D%2713%27%20width%3D%273.4%27%20height%3D%276%27%20rx%3D%271%27%20fill%3D%27%23F2C14E%27/%3E%3Crect%20x%3D%2714.3%27%20y%3D%2722.5%27%20width%3D%273.4%27%20height%3D%276%27%20rx%3D%271%27%20fill%3D%27%23F2C14E%27/%3E%3C/svg%3E" />
+<style>
+  :root {
+    --gul: #F2C14E; --gul-dim: #8A7332; --bakgrunn: #121614; --flate: #1C2320;
+    --tekst: #E8EAE7; --tekst-dmp: #9AA3A0; --muted: #707873;
+    --mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bakgrunn); color: var(--tekst); font-family: var(--sans); line-height: 1.5; -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 640px; margin: 0 auto; padding: 0 20px; }
+  a { color: var(--gul); }
+
+  /* felles toppmeny */
+  nav { position: sticky; top: 0; z-index: 50; background: rgba(18,22,20,0.94); backdrop-filter: blur(8px); border-bottom: 1px solid rgba(255,255,255,0.08); }
+  nav .inner { max-width: 860px; margin: 0 auto; padding: 11px 22px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  nav .brand { font-weight: 800; letter-spacing: 0.5px; font-size: 15px; color: var(--tekst); text-decoration: none; white-space: nowrap; }
+  nav .brand span { color: var(--gul); }
+  nav .lenker { display: flex; flex-wrap: wrap; gap: 8px 18px; font-size: 13.5px; }
+  nav .lenker a { color: var(--tekst-dmp); text-decoration: none; }
+  nav .lenker a:hover { color: var(--gul); }
+  @media (max-width: 680px){ nav .inner { flex-wrap: wrap; gap: 6px 14px; padding: 10px 16px; } nav .lenker { gap: 10px 14px; font-size: 12.5px; } }
+
+  header { background: radial-gradient(130% 90% at 50% -20%, #1d2422 0%, #121614 60%, #0d100f 100%); padding: 44px 0 30px; }
+  .merke { font-size: 12px; letter-spacing: 3px; text-transform: uppercase; color: var(--gul-dim); font-weight: 700; margin-bottom: 12px; }
+  h1 { font-size: clamp(26px, 6vw, 38px); font-weight: 800; line-height: 1.12; letter-spacing: -0.5px; }
+  .sub { font-size: clamp(15px, 2.4vw, 18px); color: var(--tekst-dmp); margin-top: 14px; max-width: 560px; }
+
+  main { padding: 30px 0 10px; }
+
+  /* avstemning */
+  .avstemning .under { font-size: 13.5px; color: var(--tekst-dmp); margin-bottom: 18px; }
+  .valg { display: flex; flex-direction: column; gap: 10px; }
+  .valg button {
+    text-align: left; font: inherit; color: var(--tekst); cursor: pointer;
+    background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 10px; padding: 15px 16px; transition: all 0.15s ease;
+  }
+  .valg button:hover { border-color: var(--gul-dim); background: rgba(242,193,78,0.06); }
+  .valg button.valgt { border-color: var(--gul); background: rgba(242,193,78,0.12); }
+  .stemknapp {
+    margin-top: 16px; width: 100%; font: inherit; font-weight: 700; cursor: pointer;
+    background: var(--gul); color: #16191A; border: none; border-radius: 10px; padding: 15px;
+  }
+  .stemknapp[disabled] { opacity: 0.4; cursor: default; }
+  .resultater { margin-top: 8px; }
+  .res-rad { margin-bottom: 14px; }
+  .res-topp { display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 6px; }
+  .res-topp .pst { font-family: var(--mono); color: var(--gul); font-weight: 700; }
+  .res-bar { height: 10px; background: rgba(255,255,255,0.06); border-radius: 5px; overflow: hidden; }
+  .res-fyll { height: 100%; background: var(--gul); border-radius: 5px; width: 0; transition: width 0.5s ease; }
+  .res-totalt { font-size: 12px; color: var(--muted); margin-top: 10px; }
+  .takk { font-size: 15px; color: var(--gul); margin-bottom: 16px; font-weight: 700; }
+
+  .notat { background: #201A12; border: 1px solid rgba(242,193,78,0.22); border-radius: 12px; padding: 14px 18px; margin-top: 22px; font-size: 13.5px; color: var(--tekst-dmp); }
+  .notat a { font-weight: 600; }
+
+  footer { border-top: 1px solid rgba(255,255,255,0.08); margin-top: 30px; padding: 24px 0 50px; }
+  footer .wrap { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
+  footer .brand { font-weight: 800; letter-spacing: 0.5px; }
+  footer .brand span { color: var(--gul); }
+  footer .smatt { font-size: 12px; color: var(--muted); }
+  .teller { font-size: 12px; color: var(--muted); margin-top: 6px; font-family: var(--mono); width: 100%; }
+  .skjult { display: none; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="inner">
+    <a class="brand" href="__BASE__/">a5<span>.no</span> · Veiprising</a>
+    <div class="lenker">
+      <a href="__BASE__/">Forsiden</a>
+      <a href="__BASE__/kalkulator.html">Kalkulator</a>
+      <a href="__BASE__/avgifter.html">Avgiftene</a>
+      <a href="__BASE__/avstemning.html">Folkekrav</a>
+      <a href="__BASE__/temperaturmaling.html">Temperaturmåling</a>
+      <a href="__BASE__/#nedlasting">Last ned</a>
+    </div>
+  </div>
+</nav>
+
+<header>
+  <div class="wrap">
+    <div class="merke">Uformell temperaturmåling</div>
+    <h1>Hva mener du?</h1>
+    <p class="sub">Hvilken modell bør erstatte dagens bompenger? Gi din stemme — en uformell temperaturmåling, maks én stemme per nettleser. Resultatene vises først etter at du har stemt.</p>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <div class="avstemning" id="avstemning">
+      <div class="valg" id="valg"></div>
+      <button class="stemknapp" id="stemknapp" disabled>Avgi stemme</button>
+      <div class="resultater skjult" id="resultater"></div>
+    </div>
+
+    <div class="notat">
+      Dette er en uformell måling av stemningen, ikke en offisiell avstemning. Vil du gi et sterkere signal, kan du <a href="__BASE__/avstemning.html">delta i folkekravet – avvikle bompengene →</a>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="brand">a5<span>.no</span></div>
+    <div class="smatt">Uformell måling · anonym, aggregert telling · <a href="__BASE__/personvern.html" style="color:var(--gul);">Personvern</a></div>
+    <div class="teller" id="teller"></div>
+  </div>
+</footer>
+
+<script>
+  var BACKEND_URL = "__BASE__/api";
+
+  (function () {
+    var avstem = document.getElementById('avstemning');
+    if (avstem) avstem.style.display = 'none'; // vises først når backend svarer
+    if (!BACKEND_URL) { return; }
+    var BASE = BACKEND_URL.replace(/\/+$/, '');
+
+    function ls(k){ try { return localStorage.getItem(k); } catch(e){ return null; } }
+    function lsSet(k,v){ try { localStorage.setItem(k,v); } catch(e){} }
+    function uuid(){ return (window.crypto && crypto.randomUUID) ? crypto.randomUUID() : 'id-'+Date.now()+'-'+Math.random().toString(36).slice(2); }
+
+    var token = ls('vp_token'); if (!token) { token = uuid(); lsSet('vp_token', token); }
+    var harStemt = ls('vp_voted');
+
+    var nyNettleser = !ls('vp_seen');
+    if (nyNettleser) lsSet('vp_seen', '1');
+    fetch(BASE + '/treff', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ nyNettleser: nyNettleser })
+    }).then(function (r) { return r.json(); }).then(function (d) {
+      var el = document.getElementById('teller');
+      if (el && d && typeof d.treff !== 'undefined') {
+        el.textContent = 'Besøk: ' + d.treff + ' · Unike nettlesere: ' + d.unike;
+      }
+    }).catch(function () {});
+
+    var valgtId = null;
+    var valgEl = document.getElementById('valg');
+    var stemEl = document.getElementById('stemknapp');
+
+    fetch(BASE + '/alternativer').then(function (r) { return r.json(); }).then(function (d) {
+      var alts = (d && d.alternativer) || [];
+      if (!alts.length) return;
+      if (avstem) avstem.style.display = '';
+      alts.forEach(function (a) {
+        var b = document.createElement('button');
+        b.type = 'button'; b.textContent = a.tekst; b.setAttribute('data-id', a.id);
+        b.addEventListener('click', function () {
+          valgtId = a.id;
+          var alle = valgEl.querySelectorAll('button');
+          for (var i = 0; i < alle.length; i++) {
+            alle[i].classList.toggle('valgt', alle[i].getAttribute('data-id') === a.id);
+          }
+          stemEl.disabled = false;
+        });
+        valgEl.appendChild(b);
+      });
+      if (harStemt) {
+        fetch(BASE + '/resultater').then(function (r) { return r.json(); }).then(function (d2) {
+          visResultater(d2.resultater, harStemt, true);
+        }).catch(function () {});
+      }
+    }).catch(function () {});
+
+    stemEl.addEventListener('click', function () {
+      if (!valgtId) return;
+      stemEl.disabled = true;
+      fetch(BASE + '/stem', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ alternativ: valgtId, token: token })
+      }).then(function (r) { return r.json(); }).then(function (d) {
+        lsSet('vp_voted', valgtId);
+        visResultater(d.resultater, valgtId, d.alleredeStemt);
+      }).catch(function () { stemEl.disabled = false; });
+    });
+
+    function visResultater(res, mittValg, gammel) {
+      if (!res) return;
+      valgEl.classList.add('skjult');
+      stemEl.classList.add('skjult');
+      var totalt = 0;
+      res.forEach(function (r) { if (r.id === '_totalt') totalt = r.antall; });
+      var ut = '<div class="takk">' + (gammel ? 'Du har allerede stemt. Slik står det nå:' : 'Takk for stemmen! Slik står det nå:') + '</div>';
+      res.forEach(function (r) {
+        if (r.id === '_totalt') return;
+        var meg = (r.id === mittValg) ? ' (ditt valg)' : '';
+        ut += '<div class="res-rad">' +
+          '<div class="res-topp"><span>' + r.tekst + meg + '</span><span class="pst">' + r.prosent + '%</span></div>' +
+          '<div class="res-bar"><div class="res-fyll" style="width:' + r.prosent + '%"></div></div>' +
+          '</div>';
+      });
+      ut += '<div class="res-totalt">' + totalt + ' stemmer totalt</div>';
+      var box = document.getElementById('resultater');
+      box.innerHTML = ut;
+      box.classList.remove('skjult');
+    }
+  })();
+</script>
+</body>
+</html>
