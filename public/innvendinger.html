@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Innvendinger og tilsvar — a5.no</title>
+<meta name="description" content="De ni vanligste motargumentene mot flat veiprising — med et ærlig svar på hver." />
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%2032%2032%27%3E%3Crect%20width%3D%2732%27%20height%3D%2732%27%20rx%3D%277%27%20fill%3D%27%2316191A%27/%3E%3Crect%20x%3D%2714.3%27%20y%3D%273.5%27%20width%3D%273.4%27%20height%3D%276%27%20rx%3D%271%27%20fill%3D%27%23F2C14E%27/%3E%3Crect%20x%3D%2714.3%27%20y%3D%2713%27%20width%3D%273.4%27%20height%3D%276%27%20rx%3D%271%27%20fill%3D%27%23F2C14E%27/%3E%3Crect%20x%3D%2714.3%27%20y%3D%2722.5%27%20width%3D%273.4%27%20height%3D%276%27%20rx%3D%271%27%20fill%3D%27%23F2C14E%27/%3E%3C/svg%3E" />
+<style>
+  :root { --gul:#F2C14E; --gul-dim:#8A7332; --bakgrunn:#121614; --flate:#1C2320; --flate2:#171d1a; --varsel:#201A12; --tekst:#E8EAE7; --tekst-dmp:#9AA3A0; --muted:#707873; --linje:rgba(255,255,255,0.08); --mono:ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace; --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  html { scroll-behavior:smooth; }
+  body { background:var(--bakgrunn); color:var(--tekst); font-family:var(--sans); line-height:1.6; -webkit-font-smoothing:antialiased; }
+  .wrap { max-width:760px; margin:0 auto; padding:0 20px; }
+  a { color:var(--gul); }
+  nav { position:sticky; top:0; z-index:50; background:rgba(18,22,20,0.94); backdrop-filter:blur(8px); border-bottom:1px solid rgba(255,255,255,0.08); }
+  nav .inner { max-width:860px; margin:0 auto; padding:11px 22px; display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  nav .brand { font-weight:800; letter-spacing:0.5px; font-size:15px; color:var(--tekst); text-decoration:none; white-space:nowrap; }
+  nav .brand span { color:var(--gul); }
+  nav .lenker { display:flex; flex-wrap:wrap; gap:8px 18px; font-size:13.5px; }
+  nav .lenker a { color:var(--tekst-dmp); text-decoration:none; }
+  nav .lenker a:hover { color:var(--gul); }
+  @media (max-width:680px){ nav .inner { flex-wrap:wrap; gap:6px 14px; padding:10px 16px; } nav .lenker { gap:10px 14px; font-size:12.5px; } }
+  header { background:radial-gradient(130% 90% at 50% -20%, #1d2422 0%, #121614 60%, #0d100f 100%); padding:44px 0 30px; }
+  .eyebrow { font-size:12px; letter-spacing:3px; text-transform:uppercase; color:var(--gul-dim); font-weight:700; margin-bottom:12px; }
+  h1 { font-size:clamp(26px,6vw,38px); font-weight:800; line-height:1.12; letter-spacing:-0.5px; }
+  .sub { font-size:clamp(15px,2.4vw,18px); color:var(--tekst-dmp); margin-top:14px; max-width:620px; }
+  main { padding:30px 0 10px; }
+  footer { border-top:1px solid var(--linje); margin-top:34px; padding:24px 0 54px; }
+  footer .wrap { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; }
+  footer .brand { font-weight:800; letter-spacing:0.5px; }
+  footer .brand span { color:var(--gul); }
+  footer .smatt { font-size:12px; color:var(--muted); }
+  .ferskt { background:#FAF6EC; color:#2a332e; border:1px solid #ecdfc0; border-left:3px solid var(--gul); border-radius:10px; padding:14px 16px; margin-bottom:24px; font-size:14.5px; }
+  .ferskt strong { color:#8A6A12; }
+  .qa { border-left:3px solid var(--gul); padding:2px 0 2px 18px; margin-bottom:22px; }
+  .qa .sp { display:flex; gap:12px; align-items:flex-start; margin-bottom:9px; }
+  .qa .nr { flex-shrink:0; width:26px; height:26px; line-height:26px; text-align:center; border-radius:50%; background:var(--gul); color:#16191A; font-weight:800; font-size:13px; }
+  .qa .q { font-weight:700; font-size:16px; color:var(--tekst); padding-top:2px; }
+  .qa .sv { color:#cdd2ce; font-size:15px; }
+  .qa .sv .lbl { color:var(--gul-dim); font-weight:700; margin-right:4px; }
+  .qa .ja { font-style:italic; color:var(--muted); }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="inner">
+    <a class="brand" href="__BASE__/">a5<span>.no</span> · Veiprising</a>
+    <div class="lenker">
+      <a href="__BASE__/">Forsiden</a>
+      <a href="__BASE__/forslaget.html">Forslaget</a>
+      <a href="__BASE__/innvendinger.html">Innvendinger</a>
+      <a href="__BASE__/kalkulator.html">Kalkulator</a>
+      <a href="__BASE__/avgifter.html">Avgiftene</a>
+      <a href="__BASE__/avstemning.html">Folkekrav</a>
+      <a href="__BASE__/temperaturmaling.html">Temperaturmåling</a>
+      <a href="__BASE__/#nedlasting">Last ned</a>
+    </div>
+  </div>
+</nav>
+
+<header><div class="wrap"><div class="eyebrow">Innvendinger og tilsvar</div><h1>De vanligste motargumentene — med ærlige svar</h1>
+<p class="sub">Enhver omlegging møter innvendinger. Her er de ni mest sannsynlige. Der en innvending har reell tyngde, sies det rett ut.</p></div></header>
+<main><div class="wrap">
+    <div class="ferskt"><strong>Ferskt eksempel:</strong>Sotrasambandet ved Bergen (totalramme 23,1 mrd) ligger an til ~74 kr per passering allerede ved åpning, samtidig som byggherre og entreprenør står fastlåst i en 7-milliarders kostnadskrangel og åpningen utsettes. Det illustrerer nettopp problemene innvendingene under handler om: prissjokk og voksende gjeld i den prosjektvise modellen.</div>
+    <div class="qa">
+      <div class="sp"><span class="nr">1</span><span class="q">«Kjørelengdetallene inkluderer kjøring i utlandet — da betaler man for veier man ikke bruker.»</span></div>
+      <div class="sv"><span class="lbl">Tilsvar:</span>En flat sats skal bare gjelde kilometer kjørt i Norge. Det løses enkelt med kilometerlogging: avlesning av kilometerstand (gjøres allerede ved EU-kontroll), eller en app som <strong>DriveArena</strong> for de som kjører mye i utlandet og vil dokumentere hvilke kilometer som er norske, med utskrift til forsikringsselskapet. Samtidig fanger samme system opp utenlandske kjøretøy som bruker norske veier — en inntekt staten i dag delvis går glipp av.</div>
+    </div>
+    <div class="qa">
+      <div class="sp"><span class="nr">2</span><span class="q">«En billig sats per km vil føre til mer kjøring, ikke mindre.»</span></div>
+      <div class="sv"><span class="lbl">Tilsvar:</span>Mer sannsynlig motsatt. I dag er de aller fleste kilometer helt gratis — bare passeringer gjennom bomringene er priset. En flat sats setter en pris på <em>hver</em> kilometer, og gir dermed et jevnere og bredere prissignal enn dagens system der mesteparten av kjøringen er upriset. Det taler for at samlet kjøring holdes eller går ned. Skulle lokal kø være et problem, kan det legges på et tids- og stedsdifferensiert påslag akkurat der det trengs — finansiering og køhåndtering er to ulike funksjoner.</div>
+    </div>
+    <div class="qa">
+      <div class="sp"><span class="nr">3</span><span class="q">«Å logge alle kilometer betyr GPS-overvåking av hvor folk kjører.»</span></div>
+      <div class="sv"><span class="lbl">Tilsvar:</span>En flat sats trenger bare å vite <em>hvor mange</em> kilometer, ikke <em>hvor</em> de er kjørt. Det holder med avlesning av kilometerstand — ingen GPS er nødvendig. App-logging er frivillig, for de som vil skille ut utenlandskjøring. Dette er faktisk mindre inngripende enn dagens bomringer, som fotograferer hver eneste passering.</div>
+    </div>
+    <div class="qa">
+      <div class="sp"><span class="nr">4</span><span class="q">«Distriktene kjører lengre og rammes hardere enn folk i byene.»</span></div>
+      <div class="sv"><span class="lbl">Tilsvar:</span><span class="ja">Dette er en reell avveining.</span> Men den slår begge veier: i dag betaler nettopp distriktsbilister brutale takster på nye strekninger (E39 er eksempelet), og en lav flat sats kan bli rimeligere for mange av dem. Modellen erstatter en vilkårlig geografi — om du tilfeldigvis bor bak en bomring — med en gjennomsiktig: hvor mye du faktisk kjører. Ønsker man å skjerme høy kjørelengde i distriktene, kan det legges inn et tak eller en distriktsjustering.</div>
+    </div>
+    <div class="qa">
+      <div class="sp"><span class="nr">5</span><span class="q">«Dette er jo bare en ny avgift — bilistene betaler uansett.»</span></div>
+      <div class="sv"><span class="lbl">Tilsvar:</span>Stemmer, og vi er ærlige på at totalsummen ikke nødvendigvis faller. Gevinsten ligger andre steder: langt lavere administrasjon (ett system mot nær 300 bomstasjoner, over én milliard kroner spart i året), ingen rentesløsing dersom gjelda overtas (rundt tre milliarder i året), forutsigbarhet for den enkelte, og at trygge veier faktisk blir brukt. Samfunnets samlede kostnad blir lavere, selv om overskriften «du betaler per km» består.</div>
+    </div>
+    <div class="qa">
+      <div class="sp"><span class="nr">6</span><span class="q">«Å bruke Oljefondet til å nedbetale gjeld bryter med handlingsregelen.»</span></div>
+      <div class="sv"><span class="lbl">Tilsvar:</span>Den mest robuste varianten er ikke å bruke fondets midler, men å la staten overta eller refinansiere gjelda. Staten har bedre kredittverdighet og låner billigere enn bompengeselskapene, så mye av rentegevinsten realiseres uansett — uten å tære på fondet eller utfordre handlingsregelen. Dette er ikke en teoretisk øvelse: i 2025 la staten om finansieringen av Norske tog nettopp slik – fra dyre lån i markedet til statlig lånefinansiering, der staten kjøper tilbake selskapets obligasjonsgjeld (regjeringen.no, 24.06.2025). Samme grep kan brukes på bompengegjelda.</div>
+    </div>
+    <div class="qa">
+      <div class="sp"><span class="nr">7</span><span class="q">«Bompenger bestemmes lokalt og øremerkes lokale prosjekter — det forsvinner.»</span></div>
+      <div class="sv"><span class="lbl">Tilsvar:</span>Prioritering av prosjekter kan fortsatt skje gjennom Nasjonal transportplan og statsbudsjettet. Det man fjerner, er det perverse i at et lokalsamfunn må påføre seg selv bompenger for i det hele tatt å få bygd veien sin. <span class="ja">Overgangen krever at staten håndterer eksisterende låneavtaler</span> — men det er en gjennomførbar oppgave, ikke en grunn til å la være, og staten har grepet inn i takster før (Ryfast).</div>
+    </div>
+    <div class="qa">
+      <div class="sp"><span class="nr">8</span><span class="q">«MC, moped og mopedbil er fritatt i dag — skal de plutselig betale?»</span></div>
+      <div class="sv"><span class="lbl">Tilsvar:</span>Et spleiselag med hull er ikke et spleiselag. I dag er motorsykler, mopeder og mopedbiler helt fritatt for bompenger — og mange kjøper nettopp mopedbil for å slippe unna. Det er et tydelig tegn på at fritaket vrir folks valg, akkurat slik bompengene vrir trafikken bort fra nye veier. Alle motoriserte kjøretøy bør være med, men vektet etter vekt og slitasje: lette kjøretøy som MC og moped betaler en redusert sats – for eksempel halv – fordi de sliter lite på veien. Beløpet blir lite; poenget er prinsippet om at alle som bruker veien bidrar.</div>
+    </div>
+    <div class="qa">
+      <div class="sp"><span class="nr">9</span><span class="q">«Byene bruker bompenger til byvekstavtaler og nullvekstmålet — forsvinner det?»</span></div>
+      <div class="sv"><span class="lbl">Tilsvar:</span>Nei. Bompengene i byene gjør to ting: de finansierer kollektiv, sykkel og gange, og de demper køen gjennom rushtidsavgift. Begge deler kan beholdes uten bomstasjoner — med en høyere, sonebasert km-sats i byvekst-områdene, gjerne tidsdifferensiert i rushtiden, krevd inn gjennom det samme flate systemet. Byene beholder da både finansieringen og kø-verktøyet, mens selve bomring-apparatet forsvinner. Det er fortsatt ett system, ikke femti bomringer — bare med en bevisst høyere sats der byene trenger det.</div>
+    </div>
+    <p style="margin-top:8px; font-size:14.5px; color:var(--tekst-dmp);">Les hele saken i <a href="__BASE__/forslaget.html">forslaget →</a> eller last ned <a href="__BASE__/filer/02-Innvendinger-og-tilsvar.pdf">PDF-en →</a></p>
+</div></main>
+<footer>
+  <div class="wrap">
+    <div class="brand">a5<span>.no</span></div>
+    <div class="smatt">Innvendinger og tilsvar · bompenger per kilometer · <a href="__BASE__/personvern.html" style="color:var(--gul);">Personvern</a></div>
+  </div>
+</footer>
+</body>
+</html>
