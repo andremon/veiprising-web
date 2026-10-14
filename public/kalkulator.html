@@ -33,6 +33,16 @@
   }
   .wrap { max-width: 720px; margin: 0 auto; padding: 0 20px; }
   a { color: var(--gul); }
+  /* felles toppmeny */
+  nav { position: sticky; top: 0; z-index: 50; background: rgba(18,22,20,0.94); backdrop-filter: blur(8px); border-bottom: 1px solid rgba(255,255,255,0.08); }
+  nav .inner { max-width: 860px; margin: 0 auto; padding: 11px 22px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  nav .brand { font-weight: 800; letter-spacing: 0.5px; font-size: 15px; color: var(--tekst); text-decoration: none; white-space: nowrap; }
+  nav .brand span { color: var(--gul); }
+  nav .lenker { display: flex; flex-wrap: wrap; gap: 8px 18px; font-size: 13.5px; }
+  nav .lenker a { color: var(--tekst-dmp); text-decoration: none; }
+  nav .lenker a:hover { color: var(--gul); }
+  @media (max-width: 680px){ nav .inner { flex-wrap: wrap; gap: 6px 14px; padding: 10px 16px; } nav .lenker { gap: 10px 14px; font-size: 12.5px; } }
+
 
   /* ---------- Hero ---------- */
   header {
@@ -180,6 +190,19 @@
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2032%2032%27%3E%3Crect%20width%3D%2732%27%20height%3D%2732%27%20rx%3D%277%27%20fill%3D%27%2316191A%27%2F%3E%3Crect%20x%3D%2714.3%27%20y%3D%273.5%27%20width%3D%273.4%27%20height%3D%276%27%20rx%3D%271%27%20fill%3D%27%23F2C14E%27%2F%3E%3Crect%20x%3D%2714.3%27%20y%3D%2713%27%20width%3D%273.4%27%20height%3D%276%27%20rx%3D%271%27%20fill%3D%27%23F2C14E%27%2F%3E%3Crect%20x%3D%2714.3%27%20y%3D%2722.5%27%20width%3D%273.4%27%20height%3D%276%27%20rx%3D%271%27%20fill%3D%27%23F2C14E%27%2F%3E%3C%2Fsvg%3E" />
 </head>
 <body>
+
+<nav>
+  <div class="inner">
+    <a class="brand" href="__BASE__/">a5<span>.no</span> · Veiprising</a>
+    <div class="lenker">
+      <a href="__BASE__/">Forsiden</a>
+      <a href="__BASE__/kalkulator.html">Kalkulator</a>
+      <a href="__BASE__/avgifter.html">Avgiftene</a>
+      <a href="__BASE__/avstemning.html">Folkekrav</a>
+      <a href="__BASE__/#nedlasting">Last ned</a>
+    </div>
+  </div>
+</nav>
 
 <header>
   <div class="wrap">

@@ -17,6 +17,16 @@
   body { background: var(--bakgrunn); color: var(--tekst); font-family: var(--sans); line-height: 1.5; -webkit-font-smoothing: antialiased; }
   .wrap { max-width: 680px; margin: 0 auto; padding: 0 20px; }
   a { color: var(--gul); }
+  /* felles toppmeny */
+  nav { position: sticky; top: 0; z-index: 50; background: rgba(18,22,20,0.94); backdrop-filter: blur(8px); border-bottom: 1px solid rgba(255,255,255,0.08); }
+  nav .inner { max-width: 860px; margin: 0 auto; padding: 11px 22px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  nav .brand { font-weight: 800; letter-spacing: 0.5px; font-size: 15px; color: var(--tekst); text-decoration: none; white-space: nowrap; }
+  nav .brand span { color: var(--gul); }
+  nav .lenker { display: flex; flex-wrap: wrap; gap: 8px 18px; font-size: 13.5px; }
+  nav .lenker a { color: var(--tekst-dmp); text-decoration: none; }
+  nav .lenker a:hover { color: var(--gul); }
+  @media (max-width: 680px){ nav .inner { flex-wrap: wrap; gap: 6px 14px; padding: 10px 16px; } nav .lenker { gap: 10px 14px; font-size: 12.5px; } }
+
 
   header { background: radial-gradient(130% 90% at 50% -20%, #1d2422 0%, #121614 60%, #0d100f 100%); padding: 44px 0 32px; }
   .tilbake { display: inline-block; font-size: 13px; color: var(--tekst-dmp); text-decoration: none; margin-bottom: 18px; }
@@ -78,9 +88,21 @@
 </head>
 <body>
 
+<nav>
+  <div class="inner">
+    <a class="brand" href="__BASE__/">a5<span>.no</span> · Veiprising</a>
+    <div class="lenker">
+      <a href="__BASE__/">Forsiden</a>
+      <a href="__BASE__/kalkulator.html">Kalkulator</a>
+      <a href="__BASE__/avgifter.html">Avgiftene</a>
+      <a href="__BASE__/avstemning.html">Folkekrav</a>
+      <a href="__BASE__/#nedlasting">Last ned</a>
+    </div>
+  </div>
+</nav>
+
 <header>
   <div class="wrap">
-    <a class="tilbake" href="__BASE__/kalkulator.html">← Tilbake til kalkulatoren</a>
     <div class="merke">Folkekrav · a5.no</div>
     <h1>Avvikle bompengene</h1>
     <div class="sporsmal">Ønsker du å avvikle alle bompenger og gå for flat veiprising?</div>
